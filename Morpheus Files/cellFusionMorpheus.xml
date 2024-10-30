@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<MorpheusModel version="4">
+    <Description>
+        <Details>One cell eats other cell and breaks it apart</Details>
+        <Title>Cellular Fusion</Title>
+    </Description>
+    <Space>
+        <Lattice class="square">
+            <Neighborhood>
+                <Order>optimal</Order>
+            </Neighborhood>
+            <Size symbol="size" value="200,200,0"/>
+            <!--    <Disabled>
+        <BoundaryConditions>
+            <Condition type="periodic" boundary="x"/>
+        </BoundaryConditions>
+    </Disabled>
+-->
+        </Lattice>
+        <SpaceSymbol symbol="space"/>
+    </Space>
+    <Time>
+        <StartTime value="0"/>
+        <StopTime value="15000"/>
+        <TimeSymbol symbol="time"/>
+    </Time>
+    <Analysis>
+        <ModelGraph include-tags="#untagged" format="dot" reduced="false"/>
+        <Gnuplotter time-step="100">
+            <Plot>
+                <Cells flooding="true" value="cell.type"/>
+            </Plot>
+            <Terminal name="png"/>
+        </Gnuplotter>
+        <ContactLogger time-step="50" celltype-to="ct2" celltype-from="ct1"/>
+        <ContactLogger time-step="50" celltype-to="ct1" celltype-from="ct1"/>
+        <ContactLogger time-step="50" celltype-to="ct0" celltype-from="ct1"/>
+        <ContactLogger time-step="50" celltype-to="ct0" celltype-from="ct2"/>
+        <ContactLogger time-step="50" celltype-to="ct2" celltype-from="ct2"/>
+    </Analysis>
+    <Global/>
+    <CellTypes>
+        <CellType name="ct0" class="medium"/>
+        <CellType name="ct1" class="biological">
+            <ConnectivityConstraint/>
+            <SurfaceConstraint target="1" strength="1" mode="aspherity"/>
+            <VolumeConstraint target="50" strength="1"/>
+        </CellType>
+        <CellType name="ct2" class="biological">
+            <ConnectivityConstraint/>
+            <SurfaceConstraint target="1" strength="1" mode="aspherity"/>
+            <VolumeConstraint target="50" strength="1"/>
+        </CellType>
+    </CellTypes>
+    <CPM>
+        <Interaction>
+            <Contact type2="ct0" type1="ct1" value="40"/>
+            <Contact type2="ct1" type1="ct1" value="20"/>
+            <Contact type2="ct2" type1="ct1" value="1"/>
+            <Contact type2="ct0" type1="ct2" value="15"/>
+            <Contact type2="ct2" type1="ct2" value="10"/>
+        </Interaction>
+        <ShapeSurface scaling="norm">
+            <Neighborhood>
+                <Order>optimal</Order>
+            </Neighborhood>
+        </ShapeSurface>
+        <MonteCarloSampler stepper="edgelist">
+            <MCSDuration value="0.1"/>
+            <MetropolisKinetics temperature="5.0"/>
+            <Neighborhood>
+                <Order>optimal</Order>
+            </Neighborhood>
+        </MonteCarloSampler>
+    </CPM>
+    <CellPopulations>
+        <Population type="ct1" size="0">
+            <InitCircle mode="random" number-of-cells="100">
+                <Dimensions center="130,100,0" radius="40"/>
+            </InitCircle>
+        </Population>
+        <Population type="ct2" size="0">
+            <InitCircle mode="random" number-of-cells="100">
+                <Dimensions center="70,100,0" radius="40"/>
+            </InitCircle>
+        </Population>
+    </CellPopulations>
+</MorpheusModel>

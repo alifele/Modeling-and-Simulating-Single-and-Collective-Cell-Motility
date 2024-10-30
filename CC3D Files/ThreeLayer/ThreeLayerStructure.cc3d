@@ -1,0 +1,5 @@
+<Simulation version="4.3.2">
+   <XMLScript Type="XMLScript">Simulation/ThreeLayerStructure.xml</XMLScript>
+   <PythonScript Type="PythonScript">Simulation/ThreeLayerStructure.py</PythonScript>
+   <Resource Type="Python">Simulation/ThreeLayerStructureSteppables.py</Resource>
+</Simulation>
